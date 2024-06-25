@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Register } from "../service/Auth.service";
 
 const useApi = (fun) => {
   const [apiData, setApiData] = useState({
@@ -10,6 +11,7 @@ const useApi = (fun) => {
   const handleDealApi = async (formData) => {
     setApiData((pre) => ({ ...pre, loading: true }));
     const res = await fun(formData);
+    // console.log(res)
 
     if (res.error) {
       setApiData((pre) => ({ ...pre, loading: false, error: res.msg }));

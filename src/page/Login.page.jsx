@@ -1,56 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ButtonComponent,
   ContainerComponent,
+  ErrorComponent,
   FormComponent,
+  LoadingComponent,
+  PreventComponent,
 } from "../components";
 import { useNavigate } from "react-router-dom";
+import useApi from "../hook/useApi";
+import { Login } from "../service/Auth.service";
 
 const LoginPage = () => {
-  const nav = useNavigate()
+  const nav = useNavigate();
+  const { handleDealApi, loading, error, data } = useApi(Login);
+  console.log(data)
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleLoginFormInput = (e) => {
-      setFormData((pre) => ({ ...pre, [e.target.name]: e.target.value }))
+    setFormData((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
 
+  useEffect(() => {
+    if(data){
+      nav("/home")
+    }
+  },[data])
+
   const handleLoginSubmit = (e) => {
-    e.preventDefault()
-    console.log(formData)
-  }
+    e.preventDefault();
+    handleDealApi(formData)
+  };
   return (
-    <ContainerComponent>
-      <div className=" Center">
-        <div className="lg:w-[400px] w-[300px]">
-          <h1 className="text-xl text-center">Login Your Contact</h1>
-          <form onSubmit={handleLoginSubmit} className=" mt-5">
-            <FormComponent
-              value={formData.email}
-              onChange={handleLoginFormInput}
-              name={"email"}
-              label={"Enter Your Email"}
-              type={"email"}
-              placeholder={"Example@gmail.com"}
-            />
+    <PreventComponent check={localStorage.getItem("auth")} path={"/home"}>
+      <ContainerComponent>
+      {loading ? (
+        <LoadingComponent />
+      ) : (
+        <div className=" Center">
+          <div className="lg:w-[400px] w-[300px]">
+            <h1 className="text-xl text-center">Login Your Contact</h1>
+            <form onSubmit={handleLoginSubmit} className=" mt-5">
+            {error && <ErrorComponent>{error}</ErrorComponent>}
 
-            <FormComponent
-              value={formData.password}
-              onChange={handleLoginFormInput}
-              name={"password"}
-              label={"Password"}
-              type={"password"}
-            />
+              <FormComponent
+                value={formData.email}
+                onChange={handleLoginFormInput}
+                name={"email"}
+                label={"Enter Your Email"}
+                type={"email"}
+                placeholder={"Example@gmail.com"}
+              />
 
-            <ButtonComponent type="Submit">Login</ButtonComponent>
+              <FormComponent
+                value={formData.password}
+                onChange={handleLoginFormInput}
+                name={"password"}
+                label={"Password"}
+                type={"password"}
+              />
 
-            
-          </form>
-          <p className=" mt-5">
-            Don't have an account?<button onClick={() =>  nav("/register")} className=" text-blue-500 underline">Register</button>
+              <ButtonComponent type="submit">Login</ButtonComponent>
+            </form>
+            <p className=" mt-5">
+              Don't have an account?
+              <button
+                onClick={() => nav("/register")}
+                className=" text-blue-500 underline"
+              >
+                Register
+              </button>
             </p>
+          </div>
         </div>
-      </div>
+      )}
     </ContainerComponent>
+    </PreventComponent>
   );
 };
 

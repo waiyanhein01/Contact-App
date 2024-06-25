@@ -5,6 +5,7 @@ import {
   ErrorComponent,
   FormComponent,
   LoadingComponent,
+  PreventComponent,
 } from "../components";
 import { useNavigate } from "react-router-dom";
 import useApi from "../hook/useApi";
@@ -33,7 +34,7 @@ const RegisterPage = () => {
     setFormData((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
 
-  const handleRegisterSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     handleDealApi(formData)
   };
@@ -41,7 +42,9 @@ const RegisterPage = () => {
   // console.log(loading,data,error)
 
   return (
-    <ContainerComponent>
+    <PreventComponent check={localStorage.getItem("auth")} path={"/home"}>
+      <ContainerComponent>
+      
       {loading ? (
         <LoadingComponent />
       ) : (
@@ -50,7 +53,7 @@ const RegisterPage = () => {
             <h1 className="text-xl text-center">Register Your Contact</h1>
             {error && <ErrorComponent>{error}</ErrorComponent>}
 
-            <form onSubmit={handleRegisterSubmit} className=" mt-5">
+            <form onSubmit={handleRegister} className=" mt-5">
               <FormComponent
                 value={formData.name}
                 onChange={handleRegisterFormInput}
@@ -87,7 +90,7 @@ const RegisterPage = () => {
                 placeholder={"confirm password"}
               />
 
-              <ButtonComponent type="Submit">Register</ButtonComponent>
+              <ButtonComponent type="submit">Register</ButtonComponent>
               
             </form>
             <p className=" mt-5">
@@ -103,6 +106,7 @@ const RegisterPage = () => {
         </div>
       )}
     </ContainerComponent>
+    </PreventComponent>
   );
 };
 

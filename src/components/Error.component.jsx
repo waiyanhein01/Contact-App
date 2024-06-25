@@ -1,4 +1,3 @@
-import React from "react";
 
 const ErrorComponent = ({children}) => {
   return (
@@ -19,7 +18,7 @@ const ErrorComponent = ({children}) => {
           />
         </svg>
       </div>
-      <div className="">{children}</div>
+      <h1 className="">{children}</h1>
     </div>
   );
 };
