@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ButtonComponent, PreventComponent } from "../components";
 import { Outlet, useNavigate } from "react-router-dom";
+import { getContactData } from "../service/Contact.service";
+import { getProfile } from "../service/Auth.service";
 
 const HomePage = () => {
   const nav = useNavigate();
@@ -10,6 +12,12 @@ const HomePage = () => {
   };
 
   const handleContactAdd = () => nav("/home/add");
+
+  useEffect(() => {
+    (async () => {
+      const res = await getProfile() 
+    })()
+  },[])
 
   return (
     <PreventComponent check={!localStorage.getItem("auth")} path={"/"}>

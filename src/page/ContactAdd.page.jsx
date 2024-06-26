@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ButtonComponent, FormComponent } from "../components";
+import { createContactData } from "../service/Contact.service";
 
 const ContactAddPage = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +14,10 @@ const ContactAddPage = () => {
     setFormData((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
-    console.log(formData)
+    const res = await createContactData(formData)
+    console.log(res)
   }
   return (
     <div>
