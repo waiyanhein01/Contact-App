@@ -9,14 +9,15 @@ export const Register = async (data) => {
   }
 };
 
-export const Login = async (d) => {
+export const Login = async (formData) => {
   try {
-    const {data} = await api.post("/login", d);
+    const res = await api.post("/login", formData);
+    const {data} = res;
 
     if(data.token) {
       localStorage.setItem("auth",JSON.stringify(data.token))
     }
-    return {data};
+    return res;
   } catch (e) {
     return { error: true, msg: e.message };
   }

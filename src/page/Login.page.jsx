@@ -10,11 +10,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import useApi from "../hook/useApi";
 import { Login } from "../service/Auth.service";
+import { useDispatch, useSelector } from "react-redux";
+import { store } from "../store/store";
+import { LoginAction } from "../store/action/auth.action";
 
 const LoginPage = () => {
   const nav = useNavigate();
-  const { handleDealApi, loading, error, data } = useApi(Login);
-  console.log(data)
+  const {loading,error,data,auth} = useSelector(store => store.auth)
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleLoginFormInput = (e) => {
@@ -29,7 +32,7 @@ const LoginPage = () => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    handleDealApi(formData)
+    LoginAction(dispatch, formData)
   };
   return (
     <PreventComponent check={localStorage.getItem("auth")} path={"/home"}>
