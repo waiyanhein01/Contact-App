@@ -22,7 +22,7 @@ const HomePage = () => {
   return (
     <PreventComponent check={!localStorage.getItem("auth")} path={"/"}>
       <div className="container mx-auto">
-        <nav className=" border shadow flex h-full w-full justify-between items-center p-3">
+        <nav className=" sticky top-0 bg-white border shadow flex h-full w-full justify-between items-center p-3">
           <h1 className="">Contact Page</h1>
           <div className=" flex space-x-5">
             <div className=" mt-auto relative group">

@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonComponent, FormComponent } from "../components";
-import { createContactData } from "../service/Contact.service";
+import { createContactData, editContact } from "../service/Contact.service";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ContactAddPage = () => {
+  const nav = useNavigate();
+  const location = useLocation();
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -10,15 +14,30 @@ const ContactAddPage = () => {
     address: "",
   });
 
+  useEffect(() => {
+    if (location.state?.edit) {
+      const { name, email, phone, address } = location.state.data;
+      setFormData({ name, email, phone, address });
+    }
+  }, [location]);
+
   const handleFormChange = (e) => {
     setFormData((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async(e) => {
-    e.preventDefault()
-    const res = await createContactData(formData)
-    console.log(res)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let res;
+    // {location.state?.edit ? await editContact(location.state.id, formData) :await createContactData(formData)}
+    if (location.state?.edit) {
+      res = await editContact(location.state.id, formData);
+    } else {
+      res = await createContactData(formData);
+    }
+    if (res) {
+      nav("/");
+    }
+  };
   return (
     <div>
       <div className="mt-5">
@@ -59,7 +78,8 @@ const ContactAddPage = () => {
                 type={"text"}
               />
 
-              <ButtonComponent type="submit">Create</ButtonComponent>
+              <ButtonComponent type="submit"> {location.state?.edit ? "Edit Contact" : "Create Contact"}
+              </ButtonComponent>
             </form>
           </div>
         </div>
