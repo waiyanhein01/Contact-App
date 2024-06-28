@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const CardContactComponents = ({ data }) => {
+const CardContactComponents = ({ data,handleDelete }) => {
   const nav = useNavigate();
 
   const handleDetailPageBtn = () => {
@@ -12,9 +12,7 @@ const CardContactComponents = ({ data }) => {
     nav("/home/add", { state: { edit: true, data, id: data.id } });
   };
 
-  const handleDelete = () => {
-    console.log("del btn")
-  };
+  
   return (
     <div className=" w-full border shadow rounded-lg mb-3 p-5 flex justify-between items-center">
       <button className=" " onClick={handleDetailPageBtn}>
@@ -45,7 +43,7 @@ const CardContactComponents = ({ data }) => {
           </svg>
         </button>
 
-        <button onClick={handleDelete}>
+        <button onClick={handleDelete.bind(this,data.id)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

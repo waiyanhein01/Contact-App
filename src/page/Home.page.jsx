@@ -13,11 +13,11 @@ const HomePage = () => {
 
   const handleContactAdd = () => nav("/home/add");
 
-  useEffect(() => {
-    (async () => {
-      const res = await getProfile() 
-    })()
-  },[])
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await getProfile() 
+  //   })()
+  // },[])
 
   return (
     <PreventComponent check={!localStorage.getItem("auth")} path={"/"}>

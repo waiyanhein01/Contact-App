@@ -22,7 +22,6 @@ const DetailContactPage = () => {
       }
     })();
   }, [id]);
-  console.log(id);
   return (
     <div className=" w-full h-screen flex flex-col mt-5">
       {items.loading ? (

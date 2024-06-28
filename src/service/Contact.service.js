@@ -26,7 +26,7 @@ export const createContactData = async (formData) => {
 export const getSingleContact = async (id) => {
   try {
     const res = await api.get(`/contact/${id}`);
-    if(res.data){
+    if (res.data) {
       return res.data.contact;
     }
   } catch (e) {
@@ -34,11 +34,22 @@ export const getSingleContact = async (id) => {
   }
 };
 
-export const editContact = async (id,formData) => {
+export const editContact = async (id, formData) => {
   try {
     const res = await api.put(`/contact/${id}`, formData);
-    if(res.data){
-      return true
+    if (res.data) {
+      return true;
+    }
+  } catch (e) {
+    return { error: true, msg: e.message };
+  }
+};
+
+export const deleteContact = async (id) => {
+  try {
+    const res = await api.delete(`/contact/${id}`);
+    if (res.data) {
+      return true;
     }
   } catch (e) {
     return { error: true, msg: e.message };
