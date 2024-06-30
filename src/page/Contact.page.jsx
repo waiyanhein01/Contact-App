@@ -1,27 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { deleteContact, getContactData } from "../service/Contact.service";
+import React, { useState } from "react";
+import { deleteContact } from "../service/Contact.service";
 import { CardContactComponent, LoadingComponent } from "../components";
+import { useGetContactQuery } from "../store/service/endpoints/contact.endpoints";
 
 const ContactPage = () => {
-  const [items, setItems] = useState({
-    loading: true,
-    data: null,
-    error: null,
-  });
+  const {isLoading,isError,data,isSuccess} = useGetContactQuery()
 
   const [deleteItems,setDeleteItems] = useState(false)
 
-  useEffect(() => {
-    (async () => {
-      setItems((pre) => ({ ...pre, loading: true }));
-      const res = await getContactData();
-      if (res.error) {
-        setItems((pre) => ({ ...pre, loading: false, error: res.msg }));
-      } else {
-        setItems((pre) => ({ ...pre, loading: false, data: res }));
-      }
-    })();
-  }, [deleteItems]);
 
   const handleDelete = async (id) => {
     await deleteContact(id)
@@ -30,14 +16,14 @@ const ContactPage = () => {
 
   return (
     <div className=" w-full h-screen flex flex-col mt-5">
-      {items.loading ? (
+      {isLoading ? (
         <LoadingComponent />
       ) : (
         <>
-          {items.error ? (
-            <h1>{items.error}</h1>
+          {isError ? (
+            <h1>{isError.message}</h1>
           ) : (
-            items.data.map((el) => 
+            data.contacts.data.map((el) => 
               <CardContactComponent handleDelete={handleDelete}  key={el.id} data={el} />
             )
           )}

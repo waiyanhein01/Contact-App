@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ButtonComponent, PreventComponent } from "../components";
 import { Outlet, useNavigate } from "react-router-dom";
-import { getContactData } from "../service/Contact.service";
-import { getProfile } from "../service/Auth.service";
 
 const HomePage = () => {
   const nav = useNavigate();

@@ -1,7 +1,6 @@
 import { Login } from "../../service/Auth.service";
 
 export const LoginAction = async (dispatch, formData) => {
-  const res = await Login(formData);
 
   try {
     dispatch({ type: "process" });
